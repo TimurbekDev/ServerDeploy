@@ -1,0 +1,17 @@
+version: '1'
+services:
+  nestjs:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      DATABASE_URL:${DATABASE_URL}
+    ports:
+      -5432:5432
