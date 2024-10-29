@@ -1,43 +1,21 @@
+FROM node:18-alpine
 
-# syntax = docker/dockerfile:1
+WORKDIR /usr/local/app
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=18.15.0
-FROM node:${NODE_VERSION}-slim as base
+COPY package*.json .
 
-LABEL fly_launch_runtime="NestJS"
+COPY prisma ./prisma
 
-# NestJS app lives here
-WORKDIR /app
+# Install dependencies
+RUN npm install
 
-# Set production environment
-ENV NODE_ENV=production
+# Generate Prisma client
+RUN npx prisma generate
 
+# Copy the rest of the application code
+COPY . .
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+EXPOSE 6000
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y python-is-python3 pkg-config build-essential 
-
-# Install node modules
-COPY --link package-lock.json package.json ./
-RUN npm ci --include=dev
-
-# Copy application code
-COPY --link . .
-
-# Build application
-RUN npm run build
-
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3001
-CMD [ "npm", "run", "start:prod" ]
+# Start the application
+CMD ["npm", "run", "start"]

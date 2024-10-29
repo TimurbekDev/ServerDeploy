@@ -1,17 +1,20 @@
-version: '1'
+version: '3.8'
 services:
-  nestjs:
-    build:
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-  postgres:
-    image: postgres
+  db:
+    image: postgres:latest
     environment:
-      DATABASE_URL:${DATABASE_URL}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Timurbek123@
+      POSTGRES_DB: newdocker
     ports:
-      -5432:5432
+      - "5433:5432"
+  app:
+    build: .
+    environment:
+      DATABASE_URL: "postgresql://postgres:Timurbek123%40@db:5433/newdocker"
+      GOOGLE_CLIENT_ID: "238887280145-9dtkr6g4tfq1fm832sl9v1d84bms2vam.apps.googleusercontent.com"
+      GOOGLE_CLIENT_SECRET: "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"
+    ports:
+      - "6000:3030"
+    depends_on:
+      - db

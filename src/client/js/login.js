@@ -7,7 +7,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     const errorMessage = document.getElementById('error-message');
   
     try {
-      axios.post('http://localhost:3000/auth/login', {
+      axios.post('http://localhost:3030/auth/login', {
         email: email,
         password:password
       })
@@ -26,6 +26,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 });
 
 document.getElementById('registerButton').addEventListener('click', function() {
-    window.location.href = 'register.html';
+    window.location.href = 'index.html';
 });
   

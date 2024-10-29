@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('http://localhost:3000');
+    const socket = io('http://localhost:3030');
   
     const messageInput = document.getElementById('messageInput');
     const chatMessages = document.getElementById('chat-messages');

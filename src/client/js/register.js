@@ -13,7 +13,7 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
         password: password
     };
 
-    axios.post('http://localhost:3000/auth/register', data)
+    axios.post('http://localhost:3030/auth/register', data)
         .then(response => {
             console.log(response.data);
             sessionStorage.setItem('userName', response.data.full_name);
